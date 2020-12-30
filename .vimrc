@@ -1,118 +1,83 @@
-"""""""""""""""""""""""""""""""""""""""
-" auto download plug
-"""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" __   _(_)_ __ ___  _ __ ___
+" \ \ / / | '_ ` _ \| '__/ __|
+"  \ V /| | | | | | | | | (__
+"   \_/ |_|_| |_| |_|_|  \___|
+"
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""'"""""""""""""""""""""""""""""""""""""""""""""""
+"Run PlugInstall if there are missing plugins
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""'''''""""""
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"""""""""""""""""""""""""""""""""""""""
-" set config
-"""""""""""""""""""""""""""""""""""""""
-filetype on
-set wildmenu
-syntax on
-set mouse=a
-set noerrorbells
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4  " backspace will remove tabs instead of space
-set expandtab
-set number relativenumber
-set backspace=indent,eol,start
-set noswapfile
-set nobackup
-set clipboard=unnamedplus
-set ttymouse=sgr
-set ttyfast
-set incsearch       " search as characters are entered
-set ignorecase      " case insensitive search
-set smartcase       " case sensitive when uppercase
-set laststatus=2    " Always display the status line
-set showmode!       " hide current mode
-set showmatch       " highlight matching brackets
-set autoindent
-set smartindent
-set shortmess+=F
-set foldmethod=syntax
-set foldnestmax=10
-set nofoldenable
-set spelllang=en_us
-set path+=**        " used for fuzzy file finding
+" automatic install plugins
+autocmd VimEnter *
+  \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall --sync | q
+  \| endif
 
-"""""""""""""""""""""""""""""""""""""""
-" config for netrw browser
-"""""""""""""""""""""""""""""""""""""""
-let g:netrw_banner=0        " disable annoying banner
-let g:netrw_browse_split=4  " open in prior window
-let g:netrw_altv=1          " open splits to the right
-let g:netrw_liststyle=3     " tree view
-
-"""""""""""""""""""""""""""""""""""""""
-"language specific formatting
-"""""""""""""""""""""""""""""""""""""""
-autocmd FileType java setlocal shiftwidth=2 softtabstop=2 expandtab
-autocmd FileType systemverilog setlocal shiftwidth=2 softtabstop=2 expandtab
-autocmd FileType html setlocal shiftwidth=2 softtabstop=2 expandtab
-autocmd FileType python setlocal shiftwidth=4 softtabstop=4 expandtab
-
-"""""""""""""""""""""""""""""""""""""""
-" colors
-"""""""""""""""""""""""""""""""""""""""
-autocmd vimenter * colorscheme wal
-hi Normal ctermbg=none
-hi EndOfBuffer ctermfg=none ctermbg=none
-hi TabLineFill ctermfg=black ctermbg=black
-set background=dark
-set t_Co=256
-
-"""""""""""""""""""""""""""""""""""""""
-" keybinds
-"""""""""""""""""""""""""""""""""""""""
-inoremap wq <Esc>
-nnoremap <C-w> :w
-cmap W w
-cmap Wq wq
-cmap WQ wq
-cmap wQ wq
-cmap Q q
-
-"""""""""""""""""""""""""""""""""""""""
-" statusline
-"""""""""""""""""""""""""""""""""""""""
-hi User1 ctermfg=black ctermbg=green
-hi User2 ctermfg=black ctermbg=blue
-hi User3 ctermfg=black ctermbg=red
-hi User4 ctermfg=black ctermbg=magenta
-hi User5 ctermfg=black ctermbg=yellow
-hi User6 ctermfg=none ctermbg=black
-
-let g:currentmode={
-    \ 'n'  : 'normal ',
-    \ 'v'  : 'visual ',
-    \ 'V'  : 'v line ',
-    \ '' : 'v block ',
-    \ 'i'  : 'insert ',
-    \ 'R'  : 'r ',
-    \ 'Rv' : 'v replace ',
-    \ 'c'  : 'command ',
-    \}
-
-set statusline=
-set statusline+=%1*\ %1*%{g:currentmode[mode()]}
-set statusline+=%6*\ %f
-set statusline+=\ %=%6*\ %Y
-set statusline+=\ %5*\ %v:%l\/%L
-set statusline+=\ "
-
-"""""""""""""""""""""""""""""""""""""""
-" plugin calls
-"""""""""""""""""""""""""""""""""""""""
 call plug#begin()
-Plug 'preservim/nerdtree'
-Plug 'tpope/vim-commentary' "gcc Vgc
-Plug 'Yggdroot/indentLine' " display indents :IndentLineToggle
-Plug 'tpope/vim-surround'
-Plug 'dylanaraps/wal.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+"Plug 'morhetz/gruvbox'
+Plug 'itchyny/lightline.vim'
+Plug 'lambdalisue/battery.vim'
 call plug#end()
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set number
+set linebreak
+set showbreak=+++
+set textwidth=1000
+set showmatch
+"set visualbell
+set hlsearch
+set smartcase
+set ignorecase
+set incsearch
+set autoindent
+set shiftwidth=4
+set smartindent
+set smarttab
+set softtabstop=4
+set ruler
+set undolevels=1000
+set backspace=indent,eol,start
+set noshowmode
+
+:nmap <space>e :CocCommand explorer<CR>
+
+"set statusline=2
+
+"set statusline=%{battery}
+"set tabline=...%{battery#component()}...
+
+
+
+"let g:battery#update_statusline = 1 " For statusline.
+
+"let g:airline#extensions#tabline#formatter#battery = 'default'
+
+
+"let g:airline_theme='simple'
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline=%{battery#component()}%{coc#status()}%{get(b:,'coc_current_function','')}
