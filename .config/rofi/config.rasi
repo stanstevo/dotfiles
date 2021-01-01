@@ -1,5 +1,5 @@
-
 * {
+	
 	background-color: transparent;
 	accent-color: #99b8ff;
 	color: #f7e6ff;
@@ -35,13 +35,13 @@ element {
 
 inputbar {
 	background-color: @accent-color;
-	color: #1a2b41;
+	color: #fff6c9;
 	border-radius: 5px;
 	padding: 5 0;
 }
 
 window {
-	background-color: #1a2b41D9;
+	background-color: #0b1117;
 	width:300px;
 	location: north;
 	y-offset: 10px;

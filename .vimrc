@@ -27,8 +27,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'morhetz/gruvbox'
-Plug 'itchyny/lightline.vim'
-Plug 'lambdalisue/battery.vim'
+"Plug 'itchyny/lightline.vim'
+"Plug 'lambdalisue/battery.vim'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set number
@@ -53,19 +53,7 @@ set noshowmode
 
 :nmap <space>e :CocCommand explorer<CR>
 
-"set statusline=2
-
-"set statusline=%{battery}
-"set tabline=...%{battery#component()}...
-
-
-
-"let g:battery#update_statusline = 1 " For statusline.
-
-"let g:airline#extensions#tabline#formatter#battery = 'default'
-
-
-"let g:airline_theme='simple'
+set statusline=2
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
@@ -77,7 +65,3 @@ else
   set signcolumn=yes
 endif
 
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline=%{battery#component()}%{coc#status()}%{get(b:,'coc_current_function','')}

@@ -136,6 +136,9 @@ alias battery='sh ~/Scripts/battery.sh'
 alias calc='~/Scripts/calc.py'
 alias copy='xclip -selection clipboard'
 
+export PATH="/home/stanoo/.local/bin:$PATH"
+
 export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
 
 alias dots='/usr/bin/git --git-dir=/home/stanoo/.dots/ --work-tree=/home/stanoo'
+alias config="/usr/bin/git --git-dir=$HOME/Projects/dotfiles/ --work-tree=$HOME"
