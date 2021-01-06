@@ -26,6 +26,7 @@ call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+"Plug 'co1ncidence/bliss'
 "Plug 'morhetz/gruvbox'
 "Plug 'itchyny/lightline.vim'
 "Plug 'lambdalisue/battery.vim'
@@ -65,3 +66,13 @@ else
   set signcolumn=yes
 endif
 
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
