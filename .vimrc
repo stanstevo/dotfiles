@@ -1,34 +1,25 @@
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" __   _(_)_ __ ___  _ __ ___
-" \ \ / / | '_ ` _ \| '__/ __|
-"  \ V /| | | | | | | | | (__
-"   \_/ |_|_| |_| |_|_|  \___|
-"
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""'"""""""""""""""""""""""""""""""""""""""""""""""
 "Run PlugInstall if there are missing plugins
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""'''''""""""
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-" automatic install plugins
+""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd VimEnter *
   \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \|   PlugInstall --sync | q
   \| endif
 
+set nocompatible
+
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'co1ncidence/bliss'
-"Plug 'morhetz/gruvbox'
-"Plug 'itchyny/lightline.vim'
+Plug 'co1ncidence/bliss'
+Plug 'bling/vim-bufferline'
+Plug 'chriskempson/base16-vim'
+"Plug 'preservim/nerdtree'
+Plug 'tpope/vim-surround'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'airblade/vim-rooter'
+Plug 'jiangmiao/auto-pairs'
+Plug 'ryanoasis/vim-devicons'
 "Plug 'lambdalisue/battery.vim'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -54,9 +45,17 @@ set noshowmode
 
 :nmap <space>e :CocCommand explorer<CR>
 
+let g:bufferline_echo = 1
+let g:airline_powerline_fonts = 1
 set statusline=2
+let g:bufferline_inactive_highlight = 'StatusLineNC'
+let g:bufferline_active_highlight = 'StatusLine'
+let g:bufferline_modified = '*'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_tab_nr = 0
 
-" Always show the signcolumn, otherwise it would shift the text each time
+"Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 
 if has("patch-8.1.1564")
@@ -76,3 +75,8 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
+
+"let base16colorspace=256
+"colorscheme
+"colorscheme base16-default-dark
+"set noswapfile

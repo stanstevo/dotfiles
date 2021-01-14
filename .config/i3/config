@@ -2,7 +2,7 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-set $ter kitty
+#set $term alacritty
 set $mod Mod4
 
 # Set colors from Xresources
@@ -29,7 +29,7 @@ bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"Hack 9\\" -run-she
 # eh 2 -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 
 # Reloading Telegram
-bindsym $mod+Shift+t exec killall telegram-deskto && telegram-desktop
+bindsym $mod+Shift+t exec killall telegram-desktop && telegram-desktop
 
 # Changing screen output
 #bindsym $mod+Shift+w exec sh ~/Scripts/autostart_screen.sh
@@ -38,20 +38,27 @@ bindsym $mod+Shift+t exec killall telegram-deskto && telegram-desktop
 #bindsym $mod+Shift+z exec sh ~/Scripts/random_wallpapers.sh
 
 # Locker
-bindsym $mod+l exec sh ~/Scripts/my-i3lock-config.sh
+bindsym $mod+l exec sh i3lock.sh
 
-exec --no-startup-id xss-lock lock
+exec --no-startup-id xss-lock i3lock.sh
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5% 
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle 
+
+
+# Music Player controls
+bindsym XF86AudioPlay		exec playerctl play
+bindsym XF86AudioPause		exec playerctl pause
+bindsym XF86AudioNext		exec playerctl next
+bindsym XF86AudioPrev		exec playerctl previous
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 
 
 # is used in the bar {} block below.
-font pango:Iosevka Nerd Font 9
+font pango:JetBrains Mono 9
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -230,7 +237,7 @@ mode "$mode_system" {
 
 # FLOATING APPLICATIONS
 for_window [class="Thunar"] floating enable
-for_window [class="kitty"] floating enable
+for_window [class="alacritty"] floating enable; resize set 640 320
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Lxappearance"] floating enable
 for_window [class="Blueman-manager"] floating enable
@@ -242,11 +249,17 @@ for_window [title="Preferences$"] floating enable
 #Draw a border around adjecent containers
 smart_borders on
 
-# Moving workspaces between screens 
-#bindsym $mod+p move workspace to output right
+#Automatic back-and-forth when switching to the current workspace
+workspace_auto_back_and_forth yes
 
+#Delaying urgency hint reset on workspace change
+force_display_urgency_hint 500 ms
+
+# Moving workspaces between screens 
+#:bindsym $mod+p move workspace to output right
+popup_during_fullscreen smart
 # Start polybar to display a workspace bar
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 #exec rofi-network manager
 bindsym $mod+c exec sh ~/.local/bin/nmcli-rofi
@@ -255,26 +268,34 @@ bindsym $mod+c exec sh ~/.local/bin/nmcli-rofi
 bindsym $mod+z exec ~/.local/bin/docu
 
 # Initial commands that execute on i3 start.
-exec_always --no-startup-id sh ~/.config/i3/startup_wallpapers.sh
-exec_always picom --config /home/stanoo/.config/picom/compton.conf
+exec_always --no-startup-id wal -R
+exec_always picom --config /home/stanoo/.config/picom/compton.conf 
 exec_always --no-startup-id ~/.local/bin/xinput-tab
 exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id autotiling
-#exec --no-startup-id i3-msg 'workspace $ws3; exec' $ter' -e ranger; workspace $ws1'
+#exec_always --no-startup-id ~/.local/bin/external_screen.sh
+#exec_always --no-startup-id feh --no-fehbg --bg-fill '/home/stanoo/Pictures/base.png' 
 
-#setting gaps
-#gaps inner 6
-#gaps outer 6
+#feh --bg-fill -z ~/.local/walls &
 
-for_window [class="^.*"] border pixel 1
+#Gap rules
+for_window [class="^.*"] border pixel 0
 gaps inner 10
 gaps outer 10
 gaps bottom 10
 gaps top 35
-# Dropdown/scratchpad window
-for_window [instance="dropdown"] floating enable
-for_window [instance="dropdown"] resize set 625 400
-for_window [instance="dropdown"] move position center
-for_window [instance="dropdown"] move scratchpad
-exec --no-startup-id alcritty -name dropdown
-bindsym $mod+Shift+Tab [instance="dropdown"] scratchpad show; move position center
+
+#Make current focused window a scratchpad
+#bindsym $mod+Shift+d move scratchpad
+#Show first scratchpad window
+#bindsym $mod+Shift+s scratchpad show
+
+#Drop down terminal
+for_window [instance="dropdown"] floating enable 
+for_window [instance="dropdown"] resize set 640 320 
+for_window [instance="dropdown"] move scratchpad 
+exec --no-startup-id kitty --name dropdown
+
+#Show dropdown terminal
+bindsym $mod+Shift+d [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
+bindsym $mod+Shift+s exec --no-startup-id kitty --name dropdown
