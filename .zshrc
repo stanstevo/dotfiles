@@ -28,7 +28,7 @@ source $ZSH/oh-my-zsh.sh
 # if [[ -n $SSH_CONNECTION ]]; then
 #
 export EDITOR='vim'
-export TERM='rxvt-256color'
+export TERM='xterm-kitty'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -37,11 +37,19 @@ export TERM='rxvt-256color'
 alias w10="sudo mount.ntfs /dev/sda4 /windows10"
 alias zconf="vim ~/.zshrc"
 alias vconf="vim ~/.vimrc"
-alias bar="vim ~/.config/polybar/config"
+alias bar="vim ~/.config/polybar/config.ini"
 alias i3conf="vim ~/.config/i3/config"
 alias kittyconf="vim ~/.config/kitty/kitty.conf"
 alias lightdmconf="sudo nvim /etc/lightdm/lightdm-webkit2-greeter.conf"
 alias lightdmwebkitconf="sudo nvim /usr/share/lightdm-webkit/themes"
+alias play="mocp"
+alias yt="youtube-dl -f 'best[height<=720]+bestaudio' "
+alias stata="wine /home/stanoo/Downloads/Stata-MP-16.0/StataMP-64.exe & disown"
+
+#kitty completions
+autoload -Uz compinit
+compinit
+kitty + complete setup zsh | source /dev/stdin
 
 # Import colorscheme from 'wpg' asynchronously
 (cat $HOME/.config/wpg/sequences &)
