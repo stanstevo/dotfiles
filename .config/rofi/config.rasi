@@ -3,7 +3,7 @@
 	background-color: transparent;
 	accent-color: #99b8ff;
 	color: #f7e6ff;
-	font: "Jetbrains Mono 10";
+	font: "Cascadia Code 10";
 }
 
 element selected {
@@ -42,11 +42,11 @@ inputbar {
 
 window {
 	background-color: #0b1117;
-	width:300px;
+	width:10%;
 	location: north;
 	y-offset: 10px;
-	width: 1000px;
-	height: 28px;
+	width: 50%;
+	height: 30px;
 }
 
 prompt {

@@ -13,22 +13,31 @@ export ZSH="$HOME/.oh-my-zsh"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git
+plugins=(
+    zsh-nvm
+    git
     battery
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-completions
     fzf-tab
     zsh-history-substring-search
+    zsh-better-npm-completion
 )
 
 source $ZSH/oh-my-zsh.sh
+
+#nvm fast startup 
+#export NVM_LAZY_LOAD=true
+
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #
 export EDITOR='vim'
 export TERM='xterm-kitty'
+
+#$EDITOR "$(find -name '*.py' | fzf --preview='pistol {}')"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -79,21 +88,38 @@ extract () {
    fi
  }
 
-# My custom aliases
-alias oh='fuck'
-
 # Functions
 function m() {
 python3 -c print("$1")
 }
 alias rm='rm -i'
+export PATH=/home/stanoo/python_projects/lib
 
 #Set your environment path
-export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
-
+export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:home/.cargo/bin:/var/lib/snapd/snap/bin
 alias dots='/usr/bin/git --git-dir=/home/stanoo/.dots/ --work-tree=/home/stanoo'
-alias config="/usr/bin/git --git-dir=$HOME/Projects/dotfiles/ --work-tree=$HOME"
-#source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source /home/stanoo/.tmc-autocomplete.sh || true
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/usr/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/usr/etc/profile.d/conda.sh" ]; then
+        . "/usr/etc/profile.d/conda.sh"
+    else
+        export PATH="/usr/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+export PATH=/usr/local/stata14:/home/stanoo/pyenv/bin:/usr/bin:/home/stanoo/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:home/.cargo/bin:/var/lib/snapd/snap/bin
+
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+

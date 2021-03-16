@@ -2,6 +2,9 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+#set wal colors
+exec_always --no-startup-id wal -i "$(< "${HOME}/.cache/wal/wal")" 
+
 #set $term alacritty
 set $mod Mod4
 
@@ -23,11 +26,12 @@ client.placeholder      $bg     $bg     $fg  $bg       $bg
 client.background       $bg
 
  # PROTIP: You can also dynamically set dmenu's colors this way:
-#bindsym $mod+d exec rofi -show drun
-bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"Hack 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"Fira Code 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 
 # eh 2 -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 
+#use rofi to search files
+bindsym $mod+Shift+f exec rofi -show find -modi find:~/.local/bin/finder.sh
 # Reloading Telegram
 bindsym $mod+Shift+t exec killall telegram-desktop && telegram-desktop
 
@@ -60,7 +64,7 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 20
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 
 
 # is used in the bar {} block below.
-font pango:JetBrains Mono 9
+font pango: Fira Code 9
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -77,15 +81,15 @@ font pango:JetBrains Mono 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec termite
 
 # Multi-screen screenshots with scrot
-bindsym --release $mod+p exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/Screenshots && mv $f ~/Pictures/Screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/Screenshots/`ls -1 -t ~/Pictures/Screenshots | head -1`'
+#bindsym --release $mod+p exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mv $f ~/Pictures/Screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/Screenshots/`ls -1 -t ~/Pictures/Screenshots | head -1`'
 
 # OSX-like area selection screenshots
-#bindsym --release $mod+s exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/Screenshots && mv $f ~/Pictures/Screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/Screenshots/`ls -1 -t ~/Pictures/Screenshots | head -1`' 
+bindsym --release $mod+p exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mv $f ~/Pictures/Screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/Screenshots/`ls -1 -t ~/Pictures/Screenshots | head -1`' 
 
-bindsym $mod+Shift+p exec --no-startup-id scrot -u -e 'feh $f -x' & notify-send -i ~/.icons/Reversal-grey/apps/scalable/digikam.svg " Screenshot "  
+bindsym $mod+Shift+p exec --no-startup-id scrot -u -e 'feh $f -x' & notify-send -i ~/.icons/Reversal-grey/apps/scalable/digikam.svg " Screenshot Taken"  
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -151,7 +155,8 @@ set $ws10 "10"
 bindsym $mod+space focus mode_toggle
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle ;; resize set 600 400  ;; move window to position 20 px 40 px  ;; mode "moveit"
+bindsym $mod+Shift+space floating toggle 
+#;; resize set 600 400  ;; move window to position 20 px 40 px  ;; mode "moveit"
 #bindsym $mod+shift+space floating toggle ;; resize set 600 400  ;; move window to position 1307 px 40 px  ;; mode "moveit"
 #bindsym $mod+control+space floating toggle ;; resize set 850 850  ;; move window to position 60 px 100 px  ;; mode "moveit"
 
@@ -225,16 +230,16 @@ bindsym $mod+r mode "resize"
 #Logout and shutdown
 #bindsym $mod+Escape exec sh /home/stanoo/.config/rofi/powermenu.sh
 #powermenu/powermenu.sh
-bindsym $mod+Escape exec  ~/.local/bin/shutdown.sh &
-#bindsym $mod+Escape mode "$mode_system"
- 
-set $mode_system (e) Logout, (s) Suspend, (r) Reboot, (p) Shutdown
-mode "$mode_system" {
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id systemctl suspend, mode "default"
-    bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym p exec --no-startup-id systemctl poweroff, mode "default"
 
+#bindsym $mod+Escape exec  ~/.local/bin/shutdown.sh &
+bindsym $mod+Escape mode "$mode_system"
+set $mode_system  l |  s |  e |  r |  S
+mode "$mode_system" {
+    bindsym l exec --no-startup-id i3exit lock, mode "default"
+    bindsym s exec --no-startup-id i3exit suspend, mode "default"
+    bindsym e exec --no-startup-id i3exit logout, mode "default"
+    bindsym r exec --no-startup-id i3exit reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -245,7 +250,6 @@ mode "$mode_system" {
 #bindsym $mod+Tab exec sh ~/Scripts/ws_right.sh
 
 # FLOATING APPLICATIONS
-for_window [class="Thunar"] floating enable
 for_window [class="urxvt"] floating enable; resize set 640 320
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Lxappearance"] floating enable
@@ -255,6 +259,8 @@ for_window [window_role="task_dialog"] floating enable
 for_window [class="(?i)mplayer"] floating enable
 for_window [title="Preferences$"] floating enable
 for_window [class="xdman-Main"] floating enable
+for_window [class="transmission-gtk"] floating enable
+for_window [class="telegram-desktop"] floating enable
 
 #Draw a border around adjecent containers
 smart_borders on
@@ -277,6 +283,8 @@ popup_during_fullscreen smart
 # Start polybar to display a workspace bar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
+#Lauch cava in polybar
+exec --no-startup-id cava -p ~/.config/cava/polybar.conf
 #exec rofi-network manager
 bindsym $mod+c exec sh ~/.local/bin/nmcli-rofi
 
@@ -290,10 +298,8 @@ exec_always --no-startup-id ~/.local/bin/xinput-tab
 exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id autotiling
 #exec_always --no-startup-id ~/.local/bin/external_screen.sh
-exec_always --no-startup-id feh --no-fehbg --bg-fill '/home/stanoo/Pictures/greeter.png' 
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-
-#
+#exec_always --no-startup-id feh --no-fehbg --bg-fill '/home/stanoo/Pictures/base.png' 
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1  
 exec --no-startup-id ~/.local/bin/column-layout
 #feh --bg-fill -z ~/.local/walls &
 
@@ -315,7 +321,7 @@ gaps top 35
 #for_window [instance="dropdown"] resize set 640 320 
 #for_window [instance="dropdown"] move scratchpad 
 
-exec --no-startup-id kitty --name dropdown 
+exec --no-startup-id termite --name dropdown 
 for_window [instance="dropdown"] floating enable, border none, move absolute \
 position 280px 0px, resize set 723px 226px, move scratchpad
 bindsym $mod+Shift+d [instance="dropdown"] scratchpad show

@@ -12,25 +12,31 @@ call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-scripts/grep.vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'ryanoasis/vim-devicons'
 Plug 'co1ncidence/bliss'
 Plug 'bling/vim-bufferline'
 Plug 'chriskempson/base16-vim'
-"Plug 'preservim/nerdtree'
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'airblade/vim-rooter'
 Plug 'jiangmiao/auto-pairs'
-Plug 'ryanoasis/vim-devicons'
-"Plug 'morhetz/gruvbox'
-"Plug 'lambdalisue/battery.vim'
+Plug 'joshdick/onedark.vim'
+
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set completeopt=menu,preview,longest
+set hidden
 set number
 set linebreak
 set showbreak=+++
 set textwidth=1000
 set showmatch
-"set visualbell
+set relativenumber
 set hlsearch
 set smartcase
 set ignorecase
@@ -44,6 +50,7 @@ set ruler
 set undolevels=1000
 set backspace=indent,eol,start
 set noshowmode
+set scrolloff=8
 
 :nmap <space>e :CocCommand explorer<CR>
 
@@ -56,6 +63,17 @@ let g:bufferline_modified = '*'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_close_button = 0
 let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline_theme='onedark'
+"*****************************************************************************
+"" Functions
+"*****************************************************************************
+if !exists('*s:setupWrapping')
+  function s:setupWrapping()
+    set wrap
+    set wm=2
+    set textwidth=79
+  endfunction
+endif
 
 "Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
@@ -67,13 +85,39 @@ else
   set signcolumn=yes
 endif
 
-" use <tab> for trigger completion and navigate to the next complete item
+"*****************************************************************************
+"" Mappings
+"*****************************************************************************
+
+"" Split
+noremap <Leader>h :<C-u>split<CR>
+noremap <Leader>v :<C-u>vsplit<CR>
+
+"" fzf.vim
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+
+" The Silver Searcher
+if executable('ag')
+  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+
+" ripgrep
+if executable('rg')
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+  set grepprg=rg\ --vimgrep
+  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+endif
+
+" abort completion with backspace
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-" abort completion with backspace
+" use <tab> for trigger completion and navigate to the next complete item
 inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
@@ -81,7 +125,7 @@ inoremap <silent><expr> <Tab>
 
 " toggle terminal
 map <leader>t <Plug>(coc-terminal-toggle)<Esc>
-"use tab in coc
+
 if exists('*complete_info')
   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
@@ -139,6 +183,6 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>t
 "let base16colorspace=256
 "colorscheme
-"colorscheme gruvbox
+"colorscheme onedark
 "set background=dark  
 set noswapfile
