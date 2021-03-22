@@ -31,7 +31,7 @@ bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"Fira Code 9\\" -ru
 # eh 2 -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 
 #use rofi to search files
-bindsym $mod+Shift+f exec rofi -show find -modi find:~/.local/bin/finder.sh
+bindsym $mod+Shift+f exec ~/.config/rofi/appmenu
 # Reloading Telegram
 bindsym $mod+Shift+t exec killall telegram-desktop && telegram-desktop
 
@@ -136,20 +136,22 @@ bindsym $mod+e layout toggle split
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
-
+#bindsym $mod+d focus childi
+#
+#focus on window activation
+focus_on_window_activation urgent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws1 "I"
+set $ws2 "II"
+set $ws3 "III"
+set $ws4 "IV"
+set $ws5 "V"
+set $ws6 "VI"
+set $ws7 "VII"
+set $ws8 "VIII"
+set $ws9 "IX"
+set $ws10 "X"
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -160,6 +162,13 @@ bindsym $mod+Shift+space floating toggle
 #bindsym $mod+shift+space floating toggle ;; resize set 600 400  ;; move window to position 1307 px 40 px  ;; mode "moveit"
 #bindsym $mod+control+space floating toggle ;; resize set 850 850  ;; move window to position 60 px 100 px  ;; mode "moveit"
 
+
+# move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
 
 
 
@@ -306,8 +315,8 @@ exec --no-startup-id ~/.local/bin/column-layout
 #Gap rules
 for_window [class="^.*"] border pixel 0
 gaps inner 10
-gaps outer 10
-gaps bottom 10
+gaps outer 15
+gaps bottom 5
 gaps top 35
 
 #Make current focused window a scratchpad
@@ -323,7 +332,7 @@ gaps top 35
 
 exec --no-startup-id termite --name dropdown 
 for_window [instance="dropdown"] floating enable, border none, move absolute \
-position 280px 0px, resize set 723px 226px, move scratchpad
+position 280px 0px, resize set 723px 426px, move scratchpad
 bindsym $mod+Shift+d [instance="dropdown"] scratchpad show
 
 #Show dropdown terminal
@@ -333,4 +342,8 @@ bindsym $mod+Shift+d [instance="dropdown"] scratchpad show
 
 #exec_always --no-startup-id kitti3
 #bindsym $mod+Shift+s nop kitti3
+
+#eww 
+bindsym $mod+Shift+w exec sh $HOME/.local/bin/dash open
+#bindsym $mod+Shift+w exec sh $HOME/.local/bin/dash close
 

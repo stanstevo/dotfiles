@@ -5,7 +5,6 @@
 	color: #f7e6ff;
 	font: "Cascadia Code 10";
 }
-
 element selected {
 	color: @accent-color;
 }
@@ -43,7 +42,7 @@ inputbar {
 window {
 	background-color: #0b1117;
 	width:10%;
-	location: north;
+	location: 0;
 	y-offset: 10px;
 	width: 50%;
 	height: 30px;

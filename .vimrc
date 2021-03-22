@@ -63,10 +63,12 @@ let g:bufferline_modified = '*'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_close_button = 0
 let g:airline#extensions#tabline#show_tab_nr = 0
-let g:airline_theme='onedark'
+let g:airline_theme='base16_gruvbox_dark_hard'
+
 "*****************************************************************************
 "" Functions
 "*****************************************************************************
+
 if !exists('*s:setupWrapping')
   function s:setupWrapping()
     set wrap

@@ -26,14 +26,6 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
-#nvm fast startup 
-#export NVM_LAZY_LOAD=true
-
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#
 export EDITOR='vim'
 export TERM='xterm-kitty'
 
@@ -73,7 +65,7 @@ extract () {
            *.tar.bz2)   tar xvjf $1    ;;
            *.tar.gz)    tar xvzf $1    ;;
            *.bz2)       bunzip2 $1     ;;
-           *.rar)       unrar x $1       ;;
+           *.rar)       unrar x $1     ;;
            *.gz)        gunzip $1      ;;
            *.tar)       tar xvf $1     ;;
            *.tbz2)      tar xvjf $1    ;;
@@ -93,15 +85,11 @@ function m() {
 python3 -c print("$1")
 }
 alias rm='rm -i'
-export PATH=/home/stanoo/python_projects/lib
 
 #Set your environment path
-export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:home/.cargo/bin:/var/lib/snapd/snap/bin
-alias dots='/usr/bin/git --git-dir=/home/stanoo/.dots/ --work-tree=/home/stanoo'
+export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/stata14:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:home/.cargo/env:/var/lib/snapd/snap/bin:/home/stanoo/pyenv/bin:/usr/local/sbin
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-source /home/stanoo/.tmc-autocomplete.sh || true
+alias dots='/usr/bin/git --git-dir=/home/stanoo/.dots/ --work-tree=/home/stanoo'
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -116,10 +104,8 @@ else
     fi
 fi
 unset __conda_setup
-# <<< conda initialize <<<
 
-export PATH=/usr/local/stata14:/home/stanoo/pyenv/bin:/usr/bin:/home/stanoo/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:home/.cargo/bin:/var/lib/snapd/snap/bin
-
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source /home/stanoo/.tmc-autocomplete.sh || true
 
