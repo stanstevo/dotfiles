@@ -11,9 +11,12 @@
 ## alternative location to config file which defines that while launching
 ## ncmpcpp.
 ##
-#
+#execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/./ncmpcpp_cover_art.sh"
+
 ncmpcpp_directory = ~/.config/ncmpcpp
-#
+
+execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art.sh"
+
 ##
 ## Directory for storing downloaded lyrics. It defaults to ~/.lyrics since other
 ## MPD clients (eg. ncmpc) also use that location.
@@ -30,7 +33,7 @@ mpd_port = 6600
 mpd_connection_timeout = 5
 
 #show cover-art on music
-execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art.sh"
+#execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art.sh"
 #
 ## Needed for tag editor and file operations to work.
 ##
@@ -373,7 +376,7 @@ centered_cursor = no
 #progressbar_look = "─- "
 #progressbar_look = "▒▒░"
 #progressbar_look = "┅┅┄"
-#progressbar_look = "─⊙┄"
+progressbar_look = "─⊙┄"
 #progressbar_look = "─➞─"
 #progressbar_look = "─┅─"
 #progressbar_look = "▪▪▪"
@@ -381,7 +384,7 @@ centered_cursor = no
 #progressbar_look = "───"
 #progressbar_look = "▁▁▁"
 #progressbar_look = "‒‒‒"
-progressbar_look = "■◣ "
+#progressbar_look = "■◣ "
 #progressbar_look = "◈◆◇
 #"progressbar_look = =>
 #
