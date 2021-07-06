@@ -7,6 +7,8 @@ autocmd VimEnter *
 
 "set termguicolors
 set nocompatible
+filetype plugin on
+syntax on
 
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -20,7 +22,12 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'co1ncidence/bliss'
 Plug 'bling/vim-bufferline'
 Plug 'chriskempson/base16-vim'
-Plug 'junegunn/fzf.vim'
+Plug 'ap/vim-css-color'
+Plug 'junegunn/goyo.vim'
+Plug 'vimwiki/vimwiki'
+Plug 'plasticboy/vim-markdown'
+Plug 'dkarter/bullets.vim'
+Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'airblade/vim-rooter'
@@ -29,6 +36,15 @@ Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 0
+let g:vim_markdown_new_list_item_indent = 0
+let g:vim_markdown_auto_insert_bullets = 0
+set conceallevel=0
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set completeopt=menu,preview,longest
 set hidden
@@ -93,8 +109,8 @@ endif
 "*****************************************************************************
 
 "" Split
-noremap <Leader>h :<C-u>split<CR>
-noremap <Leader>v :<C-u>vsplit<CR>
+noremap <leader>h :<C-u>split<CR>
+noremap <leader>v :<C-u>vsplit<CR>
 
 "" fzf.vim
 set wildmode=list:longest,list:full

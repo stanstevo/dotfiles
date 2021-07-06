@@ -39,7 +39,7 @@ alias stata="wine64 /home/stanoo/Downloads/Stata-MP-16.0/StataMP-64.exe & disown
 alias ytm='youtube-dl --extract-audio --add-metadata --xattrs --embed-thumbnail --audio-quality 0 --audio-format mp3'
 alias rm='rm -i'
 alias dots='/usr/bin/git --git-dir=/home/stanoo/.dots/ --work-tree=/home/stanoo'
-
+alias ls="ls --color"
 (cat $HOME/.config/wpg/sequences &)
 
 source ~/.cache/wal/colors-tty.sh
@@ -84,12 +84,20 @@ fda() {
 }
 
 #Set your environment path
-export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/stata14:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:home/.cargo/env:/var/lib/snapd/snap/bin:/usr/local/sbin
+export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/stata14:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:home/.cargo/env:/var/lib/snapd/snap/bin:/usr/local/sbin:/home/stanoo/bin
+
+#Tex live
+#PATH=/usr/local/texlive/2021/bin/x86_64-linux:$PATH; export PATH
+#MANPATH=/usr/local/texlive/2021/texmf-dist/doc/man:$MANPATH; export MANPATH
+#INFOPATH=/usr/local/texlive/2021/texmf-dist/doc/info:$INFOPATH; export INFOPATH
+
+#$HOME/bin
+PATH=/home/stanoo/.TinyTex/bin/x86_64-linux:$PATH; export PATH
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
-export PYENV_ROOT="$HOME/.pyenv"
+#export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

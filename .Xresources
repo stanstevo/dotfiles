@@ -19,11 +19,10 @@ Xft.lcdfilter: lcddefault
 !  ░█░█░█▀▄░█░█░█░█░▀█▀
 !  ░█░█░█▀▄░▄▀▄░▀▄▀░░█░
 !  ░▀▀▀░▀░▀░▀░▀░░▀░░░▀░
-
+!
+URxvt.font: xft:Iosevka:size=10
+URxvt.boldFont: xft:Iosevka:size=10
 URxvt.cursorBlink: 1
-URxvt*font: xft:Inconsolata for Powerline:size=11
-URxvt.boldFont: xft:Inconsolata for Powerline:size=11
-URxvt.italicFont: xft:Inconsolata for Powerline:size=11
 URxvt.lineSpace: 0
 URxvt.letterSpace: -1
 URxvt.scrollBar: false
@@ -42,8 +41,12 @@ URxvt.perl-ext-common: fullscreen,resize-font,matcher,clipboard
 URxvt.keysym.F11: perl:fullscreen:switch
 URxvt.keysym.C-Down: resize-font:smaller
 URxvt.keysym.C-Up: resize-font:bigger
-URxvt.url-launcher: firefox
+!URxvt.url-launcher: firefox
 URxvt.matcher.button: 1
+URxvt.perl-ext-common: default,matcher
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
+URxvt*saveLines: 12000
 
 !  ░█░█░▀█▀░█▀▀░█▀▄░█▄█
 !  ░▄▀▄░░█░░█▀▀░█▀▄░█░█

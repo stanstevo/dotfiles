@@ -2,9 +2,6 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-#set wal colors
-exec_always --no-startup-id wal -i "$(< "${HOME}/.cache/wal/wal")" 
-
 # Terminal variable
 set $term alacritty
 
@@ -34,30 +31,18 @@ client.placeholder      $bg     $bg     $fg  $bg       $bg
 
 client.background       $bg
 
- # PROTIP: You can also dynamically set dmenu's colors this way:
 bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"Fira Code 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
-
-# eh 2 -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
-
 #use rofi to search files
 bindsym $mod+Shift+f exec ~/.config/rofi/appmenu
 # Reloading Telegram
 bindsym $mod+Shift+t exec killall telegram-desktop && telegram-desktop
 
-# Changing screen output
-#bindsym $mod+Shift+w exec sh ~/Scripts/autostart_screen.sh
-
-# Changing theme
-#bindsym $mod+Shift+z exec sh ~/Scripts/random_wallpapers.sh
-
 # Locker
 bindsym $mod+l exec sh lock 
 
 #Use light locker to lock after timeout
-exec --no-startup-id xss-lock dm-tool switch-to-greeter
+#exec --no-startup-id xss-lock dm-tool switch-to-greeter
 
-# Use pactl to adjust volume in PulseAudio.
-#set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.local/bin/volume-up
 bindsym XF86AudioLowerVolume exec --no-startup-id ~/.local/bin/volume-down
 bindsym XF86AudioMute exec --no-startup-id ~/.local/bin/mute
@@ -66,12 +51,6 @@ bindsym XF86AudioMicMute exec --no-startup-id ~/.local/bin/mic-mute
 bindsym XF86MonBrightnessUp exec --no-startup-id ~/.local/bin/light-up
 bindsym XF86MonBrightnessDown exec --no-startup-id ~/.local/bin/light-down
 
-# Volume
-#bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5
-#bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5
-#bindsym XF86AudioMute        exec --no-startup-id pamixer -t
-
-# mocp
 # run mocp
 bindsym $mod+m exec kitty -e mocp
 
@@ -82,33 +61,26 @@ bindsym XF86AudioNext  exec --no-startup-id mocp -f
 bindsym XF86AudioPrev  exec --no-startup-id mocp -r
 bindsym XF86AudioStop  exec --no-startup-id mocp -s
 
-# Music Player controls
-#bindsym XF86AudioPlay		exec playerctl play
-#bindsym XF86AudioPause		exec playerctl pause
-#bindsym XF86AudioNext		exec playerctl next
-#bindsym XF86AudioPrev		exec playerctl previous
-
 # is used in the bar {} block below.
 font pango: Fira Code 9
 
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
-
-# Before i3 v4.8, we used to recommend this one as the default:
-# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
-
 # Multi-screen screenshots with scrot
-#bindsym --release $mod+p exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mv $f ~/Pictures/Screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/Screenshots/`ls -1 -t ~/Pictures/Screenshots | head -1`'
-bindsym $mod+Print exec /home/steve/.scripts/screenshot.sh
-# OSX-like area selection screenshots
+# bindsym --release $mod+p exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mv $f ~/Pictures/Screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/Screenshots/`ls -1 -t ~/Pictures/Screenshots | head -1`'
+#bindsym $mod+Shift+p exec ~/.local/bin/shot.sh
+## OSX-like area selection screenshots
 bindsym --release $mod+p exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mv $f ~/Pictures/Screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/Screenshots/`ls -1 -t ~/Pictures/Screenshots | head -1`' 
 
-bindsym $mod+Shift+p exec --no-startup-id scrot -u -e 'feh $f -x' & notify-send -i ~/.icons/Reversal-grey/apps/scalable/digikam.svg " Screenshot Taken"  
+#screenshot
+# Multi-screen screenshots with scrot
+bindsym --release Print exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' ;; exec --no-startup-id notify-send "Screenshot Taken"  # All screens
+# OSX-like area selection screenshots
+#bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`';; exec --no-startup-id notify-send "Screenshots Taken!" # Area selection
+
+
+# For screenshots and recording
+#bindsym Print 		exec --no-startup-id maim Pictures/Screenshots/pic-full-"$(date '+%y%m%d-%H%M-%S').png" ;; exec --no-startup-id notify-send "Taken!!"
+#bindsym $mod+p		exec --no-startup-id maimpick
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -253,10 +225,9 @@ bindsym $mod+r mode "resize"
 
 bar {
 	font pango:Hack 8
-	position bottom
+	position top
 	tray_output none
-	status_command ~/.local/bin/bumblebee-status -m mpd weather nic traffic xrandr load cpu pasink pasource \
-	date time battery -p cpu.interval=5s time.format="%H:%M" traffic.exclude=lo,vmnet1,vmnet8,lxcbr0,docker0,vboxnet,veth,wlp,wwp,br,macvtap0,vibr0,vibr,vnet0,virbr0,virbr1 nic.exclude=lo,docker,vmnet,lxcbr,wwp0s,vboxnet,veth,br,vnet,br-72a8a860a1ae,vibr0-nic,vibr,vnet0,virbr0,virbr1 -t gruvbox-powerline -a cpu load
+	status_command ~/.local/bin/bumblebee-status -m mpd weather nic xrandr load cpu pasink date time battery -p cpu.interval=5s time.format="%H:%M" traffic.exclude=lo,vmnet1,vmnet8,lxcbr0,docker0,vboxnet,veth,wlp,wwp,br,macvtap0,vibr0,vibr,vnet0,virbr0,virbr1 nic.exclude=lo,docker,vmnet,lxcbr,wwp0s,vboxnet,veth,br,vnet,br-72a8a860a1ae,vibr0-nic,vibr,vnet0,virbr0,virbr1 -t gruvbox-powerline -a cpu load
  	colors {
         active_workspace		$gray $gray $bg
         focused_workspace		$fg $fg $bg
@@ -269,28 +240,18 @@ bar {
 	}
 }
 
-#Logout and shutdown
-#bindsym $mod+Escape exec sh /home/stanoo/.config/rofi/powermenu.sh
-#powermenu/powermenu.sh
-
-#bindsym $mod+Escape exec  ~/.local/bin/shutdown.sh &
 bindsym $mod+Escape mode "$mode_system"
-set $mode_system  l |  s |  e |  r |  S
+set $mode_system  l |  s |  e |  r | S
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock, mode "default"
-    bindsym s exec --no-startup-id i3exit suspend, mode "default"
-    bindsym e exec --no-startup-id i3exit logout, mode "default"
+    bindsym s exec --no-startup-id i3exit hibernate, mode "default"
+    bindsym e exec --no-startup-id i3exit suspend, mode "default"
     bindsym r exec --no-startup-id i3exit reboot, mode "default"
     bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-
-# Changing workspaces
-#bindsym $mod+Shift+Tab exec sh ~/Scripts/ws_left.sh
-#bindsym $mod+Tab exec sh ~/Scripts/ws_right.sh
-
 # FLOATING APPLICATIONS
 for_window [class="urxvt"] floating enable; resize set 640 320
 for_window [class="Pavucontrol"] floating enable
@@ -303,82 +264,40 @@ for_window [title="Preferences$"] floating enable
 for_window [class="xdman-Main"] floating enable
 for_window [class="Transmission-gtk"] floating enable
 for_window [class="TelegramDesktop"] floating enable
-#for_window [class="TelegramDesktop"] floating enable; resize set 640 320; move position center
+for_window [class="Xfce4-power-manager-settings"] floating enable
 for_window [class="wpg"] floating enable
-
 #Draw a border around adjecent containers
 smart_borders on
-
-#Automatic back-and-forth when switching to the current workspace
-workspace_auto_back_and_forth yes
-
-#Switch between workspaces
-#bindsym Mod1+Tab workspace next
-#bindsym Mod1+Shift+Tab workspace prev
-#bindsym $mod+Tab exec --no-startup-id ~/.local/bin/next-workspace
-#bindsym $mod+Shift+Tab exec --no-startup-id ~/.local/bin/next-workspace --move-window-and-follow
-
-#Delaying urgency hint reset on workspace change
-force_display_urgency_hint 500 ms
-
-# Moving workspaces between screens 
-#:bindsym $mod+p move workspace to output right
 popup_during_fullscreen smart
 
 # Start polybar to display a workspace bar
 #exec_always --no-startup-id ~/.config/polybar/launch.sh
-
-#Lauch cava in polybar
 #exec --no-startup-id cava -p ~/.config/cava/polybar.conf
-
 #exec rofi-network manager
 bindsym $mod+c exec sh ~/.local/bin/nmcli-rofi
-
 #Open zathura history
 bindsym $mod+z exec ~/.local/bin/docu
-
 # Initial commands that execute on i3 start.
-#exec_always --no-startup-id wal -R
 exec_always picom --config /home/stanoo/.config/picom/compton.conf 
 exec_always --no-startup-id ~/.local/bin/xinput-tab
 exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id autotiling
-#exec_always --no-startup-id ~/.local/bin/external_screen.sh
-#exec_always --no-startup-id feh --no-fehbg --bg-fill '/home/stanoo/Pictures/base.png' 
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1  
 exec --no-startup-id ~/.local/bin/column-layout
-#feh --bg-fill -z ~/.local/walls &
-
+exec_always --no-startup-d xfce4-power-manager
+exec_always --no-startup-id feh --bg-fill ~/Pictures/neon.jpg
 #Gap rules
 for_window [class="^.*"] border pixel 0
 gaps inner 10
-gaps outer 15
-gaps bottom 5
-gaps top 3
-
-#Make current focused window a scratchpad
-#bindsym $mod+Shift+d move scratchpad
-#Show first scratchpad window
-#bindsym $mod+Shift+s scratchpad show
+gaps outer 1
+gaps bottom 1
+gaps top 0
 
 #Drop down terminal
-#exec --no-startup-id kitty --name dropdown
-#for_window [instance="dropdown"] floating enable 
-#for_window [instance="dropdown"] resize set 640 320 
-#for_window [instance="dropdown"] move scratchpad 
-
 exec --no-startup-id kitty --name dropdown 
 for_window [instance="dropdown"] floating enable, border none, move absolute \
 position 280px 0px, resize set 723px 426px, move scratchpad
 bindsym $mod+Shift+d [instance="dropdown"] scratchpad show
-
-#Show dropdown terminal
-#bindsym $mod+Shift+d [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
-
-#bindsym $mod+Shift+s exec --no-startup-id kitty --name dropdown
-
-#exec_always --no-startup-id kitti3
-#bindsym $mod+Shift+s nop kitti3
 
 #eww 
 bindsym $mod+Shift+w exec sh $HOME/.local/bin/dash open
