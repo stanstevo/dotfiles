@@ -5,34 +5,33 @@ autocmd VimEnter *
   \|   PlugInstall --sync | q
   \| endif
 
-"set termguicolors
+set notimeout
 set nocompatible
 filetype plugin on
 syntax on
+setlocal spell
+set spelllang=en_gb
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>ui
 
 call plug#begin()
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+Plug 'arcticicestudio/nord-vim'
+Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mcchrish/nnn.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-scripts/grep.vim'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'ryanoasis/vim-devicons'
-Plug 'co1ncidence/bliss'
 Plug 'bling/vim-bufferline'
-Plug 'chriskempson/base16-vim'
-Plug 'ap/vim-css-color'
 Plug 'junegunn/goyo.vim'
-Plug 'vimwiki/vimwiki'
+Plug 'pangloss/vim-javascript'
 Plug 'plasticboy/vim-markdown'
-Plug 'dkarter/bullets.vim'
-Plug 'SirVer/ultisnips'
-Plug 'tpope/vim-surround'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'airblade/vim-rooter'
-Plug 'jiangmiao/auto-pairs'
-Plug 'joshdick/onedark.vim'
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
@@ -43,7 +42,7 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 0
 let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_auto_insert_bullets = 0
-set conceallevel=0
+set conceallevel=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set completeopt=menu,preview,longest
@@ -69,35 +68,78 @@ set backspace=indent,eol,start
 set noshowmode
 set scrolloff=8
 
+"Nord
+let g:nord_bold = '1'
+let g:nord_italic = '1'
+let g:nord_underline = '1'
+let g:nord_undercurl = '1'
+let g:nord_termcolor = '256'
+colorscheme nord
+
+let maplocalleader="\<space>"
+let g:mapleader = ','
 :nmap <space>e :CocCommand explorer<CR>
+:nmap <leader>ll :Limelight!!<CR>
+:nmap <leader>gy :Goyo<CR>
+:nmap <leader>ge :Goyo!<CR>
+map <leader>p :!pdflatex<space>%<CR><CR>
+
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 240
+
+let g:limelight_default_coefficient = 0.7
+let g:limelight_paragraph_span = 2
+let g:limelight_bop = '^\s'
+let g:limelight_eop = '\ze\n^\s'
+let g:limelight_priority = -1
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 let g:bufferline_echo = 1
-let g:airline_powerline_fonts = 1
 set statusline=2
-let g:bufferline_inactive_highlight = 'StatusLineNC'
-let g:bufferline_active_highlight = 'StatusLine'
 let g:bufferline_modified = '*'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_close_button = 0
 let g:airline#extensions#tabline#show_tab_nr = 0
-let g:airline_theme='base16_gruvbox_dark_hard'
+
+"js config
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
+let g:javascript_conceal_function             = "ƒ"
+let g:javascript_conceal_null                 = "ø"
+let g:javascript_conceal_this                 = "@"
+let g:javascript_conceal_return               = "⇚"
+let g:javascript_conceal_undefined            = "¿"
+let g:javascript_conceal_NaN                  = "ℕ"
+let g:javascript_conceal_prototype            = "¶"
+let g:javascript_conceal_static               = "•"
+let g:javascript_conceal_super                = "Ω"
+let g:javascript_conceal_arrow_function       = "⇒"
+let g:javascript_conceal_noarg_arrow_function = "🞅"
+let g:javascript_conceal_underscore_arrow_function = "🞅"
+
 
 "*****************************************************************************
 "" Functions
 "*****************************************************************************
+"js code folding
+augroup javascript_folding
+    au!
+    au FileType javascript setlocal foldmethod=syntax
+augroup END
 
 if !exists('*s:setupWrapping')
-  function s:setupWrapping()
-    set wrap
-    set wm=2
-    set textwidth=79
-  endfunction
+    function s:setupWrapping()
+	set wrap
+	set wm=2
+	set textwidth=79
+    endfunction
 endif
 
 "Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 
-if has("patch-8.1.1564")
+if has("pah-8.1.1564")
   " Recently vim can merge signcolumn and number column into one
   set signcolumn=number
 else
@@ -107,28 +149,6 @@ endif
 "*****************************************************************************
 "" Mappings
 "*****************************************************************************
-
-"" Split
-noremap <leader>h :<C-u>split<CR>
-noremap <leader>v :<C-u>vsplit<CR>
-
-"" fzf.vim
-set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
-
-" The Silver Searcher
-if executable('ag')
-  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
-  set grepprg=ag\ --nogroup\ --nocolor
-endif
-
-" ripgrep
-if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-  set grepprg=rg\ --vimgrep
-  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-endif
 
 " abort completion with backspace
 function! s:check_back_space() abort
@@ -144,6 +164,7 @@ inoremap <silent><expr> <Tab>
 
 " toggle terminal
 map <leader>t <Plug>(coc-terminal-toggle)<Esc>
+
 
 if exists('*complete_info')
   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -200,8 +221,4 @@ nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
 nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>t
-"let base16colorspace=256
-"colorscheme
-"colorscheme onedark
-"set background=dark  
 set noswapfile

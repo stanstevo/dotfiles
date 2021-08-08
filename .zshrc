@@ -84,7 +84,7 @@ fda() {
 }
 
 #Set your environment path
-export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/stata14:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:home/.cargo/env:/var/lib/snapd/snap/bin:/usr/local/sbin:/home/stanoo/bin
+export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/stata14:/usr/bin:/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/stanoo/flutter/bin:/home/stanoo/.cargo/bin:home/.cargo/env:/var/lib/snapd/snap/bin:/usr/local/sbin:/home/stanoo/bin:/home/stanoo/.local/share/gem/ruby/3.0.0/bin
 
 #Tex live
 #PATH=/usr/local/texlive/2021/bin/x86_64-linux:$PATH; export PATH
@@ -92,10 +92,10 @@ export PATH=/home/stanoo/.local/bin:/usr/local/bin:/usr/local/stata14:/usr/bin:/
 #INFOPATH=/usr/local/texlive/2021/texmf-dist/doc/info:$INFOPATH; export INFOPATH
 
 #$HOME/bin
-PATH=/home/stanoo/.TinyTex/bin/x86_64-linux:$PATH; export PATH
+#PATH=/home/stanoo/.TinyTex/bin/x86_64-linux:$PATH; export PATH
 
 if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+    eval "$(pyenv init -)"
 fi
 #export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"

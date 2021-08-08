@@ -3,22 +3,17 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 # Terminal variable
-set $term alacritty
+set $term gnome-terminal
 
-#set $term alacritty
 set $mod Mod4
-
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec gnome-terminal
+
 # Set colors from Xresources
-# Change 'color7' and 'color2' to whatever colors you want i3 to use 
-# from the generated scheme.
-# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
-# it fails to get colors from Xresources.
 set_from_resource $fg i3wm.color7 #f0f0f0
 set_from_resource $bg i3wm.color2 #f0f0f0
 
@@ -32,13 +27,13 @@ client.placeholder      $bg     $bg     $fg  $bg       $bg
 client.background       $bg
 
 bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"Fira Code 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+
 #use rofi to search files
 bindsym $mod+Shift+f exec ~/.config/rofi/appmenu
-# Reloading Telegram
-bindsym $mod+Shift+t exec killall telegram-desktop && telegram-desktop
 
 # Locker
 bindsym $mod+l exec sh lock 
+exec --no-startup-id xss-lock lock
 
 #Use light locker to lock after timeout
 #exec --no-startup-id xss-lock dm-tool switch-to-greeter
@@ -133,17 +128,6 @@ bindsym $mod+a focus parent
 focus_on_window_activation urgent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "I"
-set $ws2 "II"
-set $ws3 "III"
-set $ws4 "IV"
-set $ws5 "V"
-set $ws6 "VI"
-set $ws7 "VII"
-set $ws8 "VIII"
-set $ws9 "IX"
-set $ws10 "X"
-
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
@@ -156,12 +140,16 @@ bindsym $mod+Shift+space floating toggle
 
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+Tab move scratchpad
-
-# Show the next scratchpad window or hide the focused scratchpad window.
-# If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+Tab scratchpad show
 
-
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -172,20 +160,37 @@ bindsym $mod+5 workspace $ws5
 bindsym $mod+6 workspace $ws6
 bindsym $mod+7 workspace $ws7
 bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
 
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
+# Move focused container to workspace
+bindsym $mod+Ctrl+1 move container to workspace $ws1
+bindsym $mod+Ctrl+2 move container to workspace $ws2
+bindsym $mod+Ctrl+3 move container to workspace $ws3
+bindsym $mod+Ctrl+4 move container to workspace $ws4
+bindsym $mod+Ctrl+5 move container to workspace $ws5
+bindsym $mod+Ctrl+6 move container to workspace $ws6
+bindsym $mod+Ctrl+7 move container to workspace $ws7
+bindsym $mod+Ctrl+8 move container to workspace $ws8
+
+# Move to workspace with focused container
+bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2; workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3; workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4; workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5; workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6; workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7; workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
+
+# # Window Rules
+#assign [class=kitty|st-256color] 1
+#assign [class=firefox|brave] 2
+#assign [class=Code|jetbrains-intellij|jetbrains-pycharm] 3
+#assign [class=Gimp*|Thunar|TelegramDesktop|Blender] 4
+#assign [class=statamp-64.exe] 5
+#for_window [class=Viewnior|feh|Lxappearance|Pavucontrol] floating enable
+#for_window [class=lunarclient] floating disable
+for_window [class=firefox|Thunar] focus
+#for_window [class=Spotify] move to workspace 5
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -199,7 +204,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Are you sure you want me to 
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-
+#
         # Pressing left will shrink the window’s width.
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
@@ -223,22 +228,28 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bar {
-	font pango:Hack 8
-	position top
-	tray_output none
-	status_command ~/.local/bin/bumblebee-status -m mpd weather nic xrandr load cpu pasink date time battery -p cpu.interval=5s time.format="%H:%M" traffic.exclude=lo,vmnet1,vmnet8,lxcbr0,docker0,vboxnet,veth,wlp,wwp,br,macvtap0,vibr0,vibr,vnet0,virbr0,virbr1 nic.exclude=lo,docker,vmnet,lxcbr,wwp0s,vboxnet,veth,br,vnet,br-72a8a860a1ae,vibr0-nic,vibr,vnet0,virbr0,virbr1 -t gruvbox-powerline -a cpu load
- 	colors {
-        active_workspace		$gray $gray $bg
-        focused_workspace		$fg $fg $bg
-        inactive_workspace		$bg $bg $gray
-		urgent_workspace		$bg $yellow $bg
-
-		statusline				$gray
-		background				$bg
-		separator				$yellow
-	}
-}
+#bar { 
+#    #i3bar_command i3bar
+#    #status_command py3status -c ~/.config/i3/py3status.conf
+#    #position bottom
+#    font pango:Hack 8
+#    position top
+#    tray_output none
+#    
+#status_command ~/.local/bin/bumblebee-status -m mpd weather nic xrandr load cpu pasink date time battery -p cpu.interval=5s time.format="%H:%M" traffic.exclude=lo,vmnet1,vmnet8,lxcbr0,docker0,vboxnet,veth,wlp,wwp,br,macvtap0,vibr0,vibr,vnet0,virbr0,virbr1 nic.exclude=lo,docker,vmnet,lxcbr,wwp0s,vboxnet,veth,br,vnet,br-72a8a860a1ae,vibr0-nic,vibr,vnet0,virbr0,virbr1 -t iceberg-powerline -a cpu load
+##strip_workspace_numbers yes
+#    
+# 	colors {
+#        active_workspace		$gray $gray $bg
+#        focused_workspace		$fg $fg $bg
+#        inactive_workspace		$bg $bg $gray
+#		urgent_workspace		$bg $yellow $bg
+#
+#		statusline				$gray
+#		background				$bg
+#		separator				$yellow
+#	}
+#}
 
 bindsym $mod+Escape mode "$mode_system"
 set $mode_system  l |  s |  e |  r | S
@@ -263,20 +274,23 @@ for_window [class="(?i)mplayer"] floating enable
 for_window [title="Preferences$"] floating enable
 for_window [class="xdman-Main"] floating enable
 for_window [class="Transmission-gtk"] floating enable
-for_window [class="TelegramDesktop"] floating enable
+for_window [class="TelegramDesktop"] floating enable; resize set 640 360
 for_window [class="Xfce4-power-manager-settings"] floating enable
 for_window [class="wpg"] floating enable
+
 #Draw a border around adjecent containers
 smart_borders on
 popup_during_fullscreen smart
 
 # Start polybar to display a workspace bar
-#exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 #exec --no-startup-id cava -p ~/.config/cava/polybar.conf
-#exec rofi-network manager
+
 bindsym $mod+c exec sh ~/.local/bin/nmcli-rofi
+
 #Open zathura history
 bindsym $mod+z exec ~/.local/bin/docu
+
 # Initial commands that execute on i3 start.
 exec_always picom --config /home/stanoo/.config/picom/compton.conf 
 exec_always --no-startup-id ~/.local/bin/xinput-tab
@@ -285,13 +299,17 @@ exec_always --no-startup-id autotiling
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1  
 exec --no-startup-id ~/.local/bin/column-layout
 exec_always --no-startup-d xfce4-power-manager
-exec_always --no-startup-id feh --bg-fill ~/Pictures/neon.jpg
+exec_always --no-startup-id feh --bg-fill ~/Pictures/aston.jpg
+exec_always --no-startup-id i3wsr --config ~/.config/i3/i3wsr.toml
+exec_always --no-startup-id "pkill conky; sleep 0.5; conky -c ~/.config/conky/conky; conky -c ~/.config/conky/conky_shortcuts"
+
+
 #Gap rules
 for_window [class="^.*"] border pixel 0
 gaps inner 10
 gaps outer 1
-gaps bottom 1
-gaps top 0
+gaps bottom 0
+gaps top 15
 
 #Drop down terminal
 exec --no-startup-id kitty --name dropdown 
